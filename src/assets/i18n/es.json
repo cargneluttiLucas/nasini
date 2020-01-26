@@ -1,0 +1,17 @@
+{
+  "PAGES": {
+    "HOME": {
+      "WELCOME": "Bienvenidos",
+      "BTN_HOME": "Principal",
+      "BTN_DEMO": "Demo"
+    },
+    "UNAUTHORIZED": "No tenes permisos!!, comunicate con el 0800...",
+    "NOT_FOUND": {
+      "DEFAULT": "Página no encontrada"
+    }
+  },
+  "COMMON": {
+    "BTN_LOGIN": "Iniciar Session",
+    "BTN_LOGOUT": "Cerrar Session"
+  }
+}
