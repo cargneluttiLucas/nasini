@@ -3,14 +3,16 @@ import { Injectable } from '@angular/core';
 import auth0SpaJs from '@auth0/auth0-spa-js';
 import Auth0Client from '@auth0/auth0-spa-js/dist/typings/Auth0Client';
 import { from, of, Observable, BehaviorSubject, combineLatest, throwError } from 'rxjs';
-import { tap, catchError, concatMap, shareReplay, map, debounceTime } from 'rxjs/operators';
+import { tap, catchError, concatMap, shareReplay, map } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { Store } from '@ngrx/store';
 import { Logout, LoginFailure, LoginSuccess } from '../store/auth.actions';
 import { AuthenticationUtilsService } from './authentication-utils.service';
 import { Router } from '@angular/router';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthenticationService {
   // Create an observable of Auth0 instance of client
   auth0Client$ = (from(
@@ -18,7 +20,8 @@ export class AuthenticationService {
       domain: environment.auth0.domain,
       client_id: environment.auth0.clientID,
       redirect_uri: `${window.location.origin}${environment.auth0.urlRedirectAfterLogin}`,
-      audience: environment.auth0.audience,
+      // audience: environment.auth0.audience,
+      // scope: environment.auth0.scope,
       // prompt: 'none',
       // responseType: 'token id_token',
     }),
@@ -43,12 +46,15 @@ export class AuthenticationService {
   // Create subject and public observable of user profile data
   private userProfileSubject$ = new BehaviorSubject<any>(null);
   userProfile$ = this.userProfileSubject$.asObservable();
+
   // Create subject and public observable to loginIn
   private loggedInSubject$ = new BehaviorSubject<any>(null);
   isLoggedIn$ = this.loggedInSubject$.asObservable();
+
   // Create subject and public observable in progress
   private loginInProgressSubject$ = new BehaviorSubject<any>(null);
   loginInProgress$ = this.loginInProgressSubject$.asObservable();
+
   // Path to redirect to after login processed
   targetRoute: string;
 
@@ -61,7 +67,7 @@ export class AuthenticationService {
     // Set up local auth streams if user is already authenticated
     this.localAuthSetup();
     // Handle redirect from Auth0 login
-   
+    this.handleAuthCallback();
   }
 
   // When calling, options can be passed if desired
@@ -70,21 +76,26 @@ export class AuthenticationService {
   getUser$(options?): Observable<any> {
     return this.auth0Client$.pipe(
       concatMap((client: Auth0Client) => combineLatest(from(client.getUser(options)), from(client.getTokenSilently(options)))),
-      map(([user, token]) => ({ ...user, ...this._authUtils.parseToken(token) })),
-      tap(data => this.userProfileSubject$.next(data)),
+      map(([user, token]) => ({
+        ...user,
+        ...this._authUtils.parseToken(token)
+      })),
+      tap((data) => {
+        console.log('esto es la data del GET USER', data);
+        this.userProfileSubject$.next(data);
+      }),
     );
   }
 
   private localAuthSetup() {
     this.loginInProgressSubject$.next(true);
     const checkAuth$ = this.isAuthenticated$.pipe(
-      debounceTime(1000),
       concatMap((loggedIn: boolean) => {
         if (loggedIn) {
           // If authenticated, get user and set in app
           // NOTE: you could pass options here if needed
           return this.getUser$().pipe(
-            tap(user =>  this.store.dispatch(new LoginSuccess(user))),
+            tap(user => this.store.dispatch(new LoginSuccess(user))),
           );
         }
         // If not authenticated, return stream that emits 'false'
@@ -94,7 +105,7 @@ export class AuthenticationService {
         this.loginInProgressSubject$.next(false);
       }),
     );
-    checkAuth$.subscribe(() => { this.handleAuthCallback();});
+    checkAuth$.subscribe();
   }
 
   login(redirectPath: string = '/') {
@@ -111,15 +122,14 @@ export class AuthenticationService {
   }
 
   private handleAuthCallback() {
-    setTimeout(() => {
-      // Call when app reloads after user logs in with Auth0
+    // Call when app reloads after user logs in with Auth0
     const params = window.location.search;
     if (params.includes('code=') && params.includes('state=')) {
       const authComplete$ = this.handleRedirectCallback$.pipe(
         // Have client, now call method to handle auth callback redirect
         // Get and set target redirect route from callback results
         tap(cbRes => this.targetRoute = cbRes.appState && cbRes.appState.target ? cbRes.appState.target : '/'),
-        concatMap(() =>  combineLatest(
+        concatMap(() => combineLatest(
           this.getUser$(),
           this.isAuthenticated$,
         )),
@@ -131,14 +141,11 @@ export class AuthenticationService {
           this.store.dispatch(new LoginSuccess(user));
         } else {
           this.router.navigate([environment.auth0.urlRedirectUnauthorized]);
-          // this.store.dispatch(new LoginFailure('unauthorized'));
-          // setTimeout(() => {
-          //   // this.store.dispatch(new Logout());
-          // },         2000);
+          this.store.dispatch(new LoginFailure('unauthorized'));
+          this.store.dispatch(new Logout());
         }
       });
     }
-    },4000);
   }
 
   logout() {

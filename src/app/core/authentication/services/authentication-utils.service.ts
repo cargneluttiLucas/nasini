@@ -22,8 +22,8 @@ export class AuthenticationUtilsService {
     console.log('/////////////////////////////////////', tokenAuth['http://nasini.com.ar/userinfo']);
     console.log('/////////////////////////////////////', tokenAuth['https://nasini.auth0.com/api/v2/']);
     console.log('/////////////////////////////////////', tokenAuth['https://nasini.auth0.com/userinfo']);
-    console.log('/////////////////////////////////////', tokenAuth.aud['https://nasini.auth0.com/api/v2/']);
-    console.log('/////////////////////////////////////', tokenAuth.aud['https://nasini.auth0.com/userinfo']);
+    console.log('/////////////////////////////////////', tokenAuth.aud[0]);
+    console.log('/////////////////////////////////////', tokenAuth.aud[1]);
     console.log('/////////////////accessToken////////////////////', accessToken);
     console.log('/////////////////tokenAuth////////////////////', tokenAuth);
     const { exp = 1 }  = tokenAuth;
@@ -45,7 +45,6 @@ export class AuthenticationUtilsService {
   private parseJwt(token) {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace('-', '+').replace('_', '/');
-    console.log('**************************************', JSON.parse(atob(base64)));
     return JSON.parse(atob(base64)) || null;
   }
 }

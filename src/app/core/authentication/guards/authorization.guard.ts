@@ -18,7 +18,6 @@ export class AuthorizationGuard implements CanActivate {
     return this.authService.isAuthenticated$.pipe(
       first(),
       concatMap((isAuthenticated) => {
-        console.log('canActivate', isAuthenticated);
         if (isAuthenticated) {
           return this.authService.userProfile$.pipe(
             filter(user => user !== null),
@@ -30,7 +29,7 @@ export class AuthorizationGuard implements CanActivate {
             }),
             tap((allowed) => {
               if (!allowed) {
-                this.router.navigateByUrl('/brand');
+                this.router.navigateByUrl('/');
                 return EMPTY;
               }
             }),

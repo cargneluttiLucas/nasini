@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
 import { Observable } from 'rxjs';
-import { tap, debounceTime } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class AuthenticationGuard implements CanActivate {
@@ -16,16 +16,21 @@ export class AuthenticationGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
   ): Observable<boolean> | Promise<boolean> | boolean {
-    return this._authService.isLoggedIn$.pipe(
-      debounceTime(400),
-      tap((isAuthenticated) => {
-        console.error(isAuthenticated)
-        if (!isAuthenticated) {
-          this.router.navigate(['/unauthorized']);
-          return false;
+    return this._authService.isAuthenticated$.pipe(
+      // metdo que usa en el tutorial auth0
+      tap(loggedIn => {
+        if (!loggedIn) {
+          this._authService.login(state.url);
         }
-        return true;
-      }),
+      })
+      // metodo que usa naranja 
+      // tap((isAuthenticated) => {
+      //   if (!isAuthenticated) {
+      //     this.router.navigate(['/unauthorized']);
+      //     return false;
+      //   }
+      //   return true;
+      // }),
     );
   }
 }
