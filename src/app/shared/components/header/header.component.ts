@@ -1,8 +1,8 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { fromEvent } from 'rxjs';
 import { distinctUntilChanged, filter, map, pairwise, share, throttleTime } from 'rxjs/operators';
-import { WindowService } from '../../services/index';
-import { StyleVarDirection } from '../../enums/style-vars.enum';
+import { WindowService } from '../../services';
+import { StyleVarDirection } from '../../enums';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',

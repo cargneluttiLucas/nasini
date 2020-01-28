@@ -9,6 +9,8 @@ import { RootStoreModule } from './root-store/root-store.module';
 import { UnauthorizedComponent } from './pages/unauthorized/unauthorized.component';
 import { CallbackComponent } from './pages/callback/callback.component';
 import { HttpClientModule } from '@angular/common/http';
+import { HeaderModule } from './shared/components/header';
+import { ButtonModule } from './shared';
 
 @NgModule({
   declarations: [
@@ -19,14 +21,14 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    SharedModule.forRoot(),
     CoreModule,
-    SharedModule,
     RootStoreModule,
     HttpClientModule
   ],
   entryComponents: [
     UnauthorizedComponent,
-    CallbackComponent
+    CallbackComponent,
   ],
   providers: [],
   bootstrap: [AppComponent]

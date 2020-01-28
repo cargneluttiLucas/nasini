@@ -6,7 +6,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import { ReplaySubject } from 'rxjs/internal/ReplaySubject';
-import { NavigatorService } from '../core/utils/services/navigator.service';
+import { NavigatorService } from '../shared/services';
 class StoreMock {
   select = jasmine.createSpy().and.returnValue(of({
     router: {},

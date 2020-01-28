@@ -7,7 +7,6 @@ import { AuthenticationService } from './core/authentication/services/authentica
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'nasini-angular';
 
   constructor(public auth: AuthenticationService) { }
 

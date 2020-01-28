@@ -1,7 +1,7 @@
 
 import { Injectable } from '@angular/core';
 import { Actions } from '@ngrx/effects';
-import { NavigatorService } from '../core/utils/services/navigator.service';
+import { NavigatorService } from '../shared/services';
 @Injectable()
 export class RootEffects {
 

@@ -14,6 +14,7 @@ export const environment = {
     urlRedirectAfterLogin: '/callback',
     urlRedirectAfterLogout: '/',
   },
-  addresses: {
+  contact: {
+    postQuery: ''
   },
 };

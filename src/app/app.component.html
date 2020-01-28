@@ -1,9 +1,7 @@
-<header>
-    <button (click)="auth.login()" *ngIf="!(auth.isLoggedIn$ | async)">Log In</button>
-    <button (click)="auth.logout()" *ngIf="(auth.isLoggedIn$ | async)">Log Out</button>
-  </header>
-
-  <div *ngIf="auth.userProfile$ | async as profile">
-    <code>{{ profile | json }}</code>
-</div>
+<app-header>
+    <div right>
+        <app-button type="header" text="Log In" *ngIf="!(isLoggedIn$ | async)"></app-button>
+        <app-button type="header" text="Log Out" *ngIf="(isLoggedIn$ | async)"></app-button>
+    </div>
+</app-header>
 <router-outlet></router-outlet>

@@ -1,5 +1,5 @@
 import { Directive, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
-import { NavigatorService } from '../../../core/utils/services/navigator.service';
+import { NavigatorService } from '../../services';
 
 @Directive({
   selector: '[appDatasrc]',
