@@ -7,8 +7,8 @@ export const environment = {
   auth0: {
     domain: 'nasini.auth0.com',
     clientID: 'tiTCuWpMoRvdhfvZZHFKjGMkZdMN2PCt',
-    audience: 'https://nasini.auth0.com/api/v2/',
-    scope: 'openid%20email%20profile',
+    audience: 'https://f9hg9stslk.execute-api.sa-east-1.amazonaws.com',
+    scope: 'openid profile email write.self',
     urlRedirectAfterCallback: '/',
     urlRedirectUnauthorized: '/unauthorized',
     urlRedirectAfterLogin: '/callback',
@@ -17,4 +17,7 @@ export const environment = {
   contact: {
     postQuery: ''
   },
+  market: {
+
+  }
 };

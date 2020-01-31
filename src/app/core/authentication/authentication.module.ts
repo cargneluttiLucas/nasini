@@ -32,8 +32,8 @@ import { AuthenticationGuard } from './guards/authentication.guard';
     AuthenticationService,
     AuthenticationGuard,
     {
-      provide: 'authTITOnlyGuard',
-      useFactory: (authService: AuthenticationService, router: Router) => new AuthorizationGuard(['user'], authService, router), // TODO
+      provide: 'authUSEROnlyGuard',
+      useFactory: (authService: AuthenticationService, router: Router) => new AuthorizationGuard(['user'], authService, router),
       deps: [
         AuthenticationService,
         Router,

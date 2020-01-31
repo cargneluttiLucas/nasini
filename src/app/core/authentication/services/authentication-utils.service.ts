@@ -14,24 +14,16 @@ export class AuthenticationUtilsService {
    * The credentials may be persisted across sessions.
    * @param accessToken Auth0 accessToken.
    */
-
   public parseToken(accessToken): Object {
+    console.log('******************************', accessToken);
     const tokenAuth = this.parseJwt(accessToken);
-
-    console.log('/////////////////////////////////////', tokenAuth['http://nasini.com.ar/roles'][0]);
-    console.log('/////////////////////////////////////', tokenAuth['http://nasini.com.ar/userinfo']);
-    console.log('/////////////////////////////////////', tokenAuth['https://nasini.auth0.com/api/v2/']);
-    console.log('/////////////////////////////////////', tokenAuth['https://nasini.auth0.com/userinfo']);
-    console.log('/////////////////////////////////////', tokenAuth.aud[0]);
-    console.log('/////////////////////////////////////', tokenAuth.aud[1]);
-    console.log('/////////////////accessToken////////////////////', accessToken);
-    console.log('/////////////////tokenAuth////////////////////', tokenAuth);
-    const { exp = 1 }  = tokenAuth;
-    const expiresAt = exp;
-    // const { shopId } = tokenAuth['http://nasini.com.ar/info'];
-    const tokenType = AuthType.auth0;
+    const { exp = 1 } = tokenAuth;
+    const expiresAt = exp * 1000;
+    const roles = tokenAuth['http://nasini.com.ar/roles'][0];
+    const tokenType = AuthType.onPremise;
     return {
       expiresAt,
+      roles,
       tokenType,
     };
   }

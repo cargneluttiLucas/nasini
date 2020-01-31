@@ -20,8 +20,8 @@ export class AuthenticationService {
       domain: environment.auth0.domain,
       client_id: environment.auth0.clientID,
       redirect_uri: `${window.location.origin}${environment.auth0.urlRedirectAfterLogin}`,
-      // audience: environment.auth0.audience,
-      // scope: environment.auth0.scope,
+      audience: environment.auth0.audience,
+      scope: environment.auth0.scope,
       // prompt: 'none',
       // responseType: 'token id_token',
     }),
@@ -36,7 +36,10 @@ export class AuthenticationService {
   // from: Convert that resulting promise into an observable
   isAuthenticated$ = this.auth0Client$.pipe(
     concatMap((client: Auth0Client) => from(client.isAuthenticated())),
-    tap(res => this.loggedInSubject$.next(res)),
+    tap((res) => {
+      console.log('estado de respuesta cuando intenta verificar estado', res);
+      this.loggedInSubject$.next(res);
+    }),
   );
 
   handleRedirectCallback$ = this.auth0Client$.pipe(
@@ -81,7 +84,6 @@ export class AuthenticationService {
         ...this._authUtils.parseToken(token)
       })),
       tap((data) => {
-        console.log('esto es la data del GET USER', data);
         this.userProfileSubject$.next(data);
       }),
     );

@@ -1,7 +1,12 @@
 <app-header>
+    <div left>
+        <app-button type="header" text="Empresa" (clickButton)="navigateToBrand()"></app-button>
+        <app-button type="header" text="Servicios" (clickButton)="navigateToService()"></app-button>
+        <app-button type="header" text="Mercados" (clickButton)="navigateToMarket()" *ngIf="(isLoggedIn$ | async)"></app-button>
+    </div>
     <div right>
-        <app-button type="header" text="Log In" *ngIf="!(isLoggedIn$ | async)"></app-button>
-        <app-button type="header" text="Log Out" *ngIf="(isLoggedIn$ | async)"></app-button>
+        <app-button type="header" text="Log In" (clickButton)="login()" *ngIf="!(isLoggedIn$ | async)"></app-button>
+        <app-button type="header" text="Log Out" (clickButton)="logout()" *ngIf="(isLoggedIn$ | async)"></app-button>
     </div>
 </app-header>
 <router-outlet></router-outlet>

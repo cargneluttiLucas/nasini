@@ -17,7 +17,6 @@ const routes: Routes = [
   {
     path: 'service',
     loadChildren: './pages/service/service.module#ServiceModule',
-    canActivate: [AuthenticationGuard],
     data: {
       title: 'Servicios',
     },
@@ -25,6 +24,14 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: './pages/home/home.module#HomeModule',
+    data: {
+      title: 'Nasini',
+    },
+  },
+  {
+    path: 'market',
+    loadChildren: './pages/markets/market.module#MarketModule',
+    canActivate: [AuthenticationGuard],
     data: {
       title: 'Nasini',
     },

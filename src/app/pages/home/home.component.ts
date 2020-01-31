@@ -13,10 +13,7 @@ export class HomeComponent implements OnInit {
     ngOnInit() {
         console.log('entre a home');
         this.auth.getUser$().subscribe((data) => {
-            console.log('Usuario en home: ', data);
-        });
-        this.auth.userProfile$.subscribe((data) => {
-            console.log('perfil en home: ', data);
+            console.log('Usuario en home: ', data['http://nasini.com.ar/roles'][0]);
         });
     }
 }

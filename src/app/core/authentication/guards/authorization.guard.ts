@@ -29,7 +29,7 @@ export class AuthorizationGuard implements CanActivate {
             }),
             tap((allowed) => {
               if (!allowed) {
-                this.router.navigateByUrl('/');
+                this.router.navigateByUrl('/callback');
                 return EMPTY;
               }
             }),

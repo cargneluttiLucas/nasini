@@ -12,11 +12,5 @@ export class MarketComponent implements OnInit {
 
     ngOnInit() {
         console.log('entre a market');
-        this.auth.getUser$().subscribe((data) => {
-            console.log('Usuario en market: ', data);
-        });
-        this.auth.userProfile$.subscribe((data) => {
-            console.log('perfil en market: ', data);
-        });
     }
 }
