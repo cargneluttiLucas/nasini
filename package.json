@@ -70,7 +70,7 @@
     "protractor": "~5.4.0",
     "puppeteer": "^1.16.0",
     "rimraf": "^2.6.3",
-    "standard-version": "^7.0.0",
+    "standard-version": "^8.0.1",
     "stubby": "^4.1.1",
     "stylelint-config-suitcss": "^14.0.0",
     "stylelint-selector-bem-pattern": "^2.1.0",
